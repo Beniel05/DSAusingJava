@@ -1,0 +1,22 @@
+// works even for files - which are even inside of other directory in this workplace
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "java compile and run",
+      "type": "shell",
+      "command": "javac \"${file}\" && java -cp \"${fileDirname}\" \"${fileBasenameNoExtension}\" < \"${workspaceFolder}\\input.txt\" > \"${workspaceFolder}\\output.txt\"",
+      "options": {
+        "cwd": "${fileDirname}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
