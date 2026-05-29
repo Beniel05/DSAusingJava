@@ -149,9 +149,34 @@ public class basicMath {
         }
     }
 
-    static void findGCDofTwoNumbersOptimized(int a, int b) {
-        // will be implemented after understanding the concept.       
+    static void findGCD_Optimized_EuclideanAlgo(int a, int b) {
+        /*
+         * Euclidean Algorithm states that:
+         * 
+         * gcd(a, b) = gcd(a - b, b) when a > b
+         * gcd(a, b) = gcd(a, b - a) when b > a
+         * 
+         * Optimized Euclidean Algorithm:
+         * gcd(a, b) = gcd(b, a % b)
+         * Why optimized? Instead of repeated subtraction, modulo removes multiple
+         * subtractions in one step.
+         * 
+         * Base Case:
+         * gcd(a, 0) = a
+         */
+        int orgA = a, orgB = b;
+        while (a > 0 && b > 0) {
+            if (a > b)
+                a = a % b;
+            else
+                b = b % a;
+        }
+        if (a == 0)
+            System.out.print("GCD/HCF of " + orgA + " and " + orgB + " is: " + b);
+        else
+            System.out.print("GCD/HCF of " + orgA + " and " + orgB + " is: " + a);
     }
+
     public static void main(String[] args) {
 
         // countDigitsOfAGivenNumber(12345);
@@ -172,8 +197,9 @@ public class basicMath {
          * System.out.print(n + " is NOT A PRIME number");
          */
 
-        findGCDofTwoNumbersBRUTEforce(9,12);
-        findGCDofTwoNumbersOptimized(527, 1147); // euclidean algorithm
+        // findGCDofTwoNumbersBRUTEforce(9, 12);
+        // findGCD_Optimized_EuclideanAlgo(527, 1147);
 
+        
     }
 }
