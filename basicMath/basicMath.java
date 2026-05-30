@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class basicMath {
+public class BasicMath {
 
     static void countDigitsOfAGivenNumber(int n) {
         int digit = 0;
@@ -198,7 +198,7 @@ public class basicMath {
          */
 
         // findGCDofTwoNumbersBRUTEforce(9, 12);
-        // findGCD_Optimized_EuclideanAlgo(527, 1147);
+        findGCD_Optimized_EuclideanAlgo(527, 1147);
 
         
     }
