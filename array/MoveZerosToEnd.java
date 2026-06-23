@@ -61,7 +61,7 @@ public class MoveZerosToEnd {
     // RETURNING THE NEW ARRAY;
 
     static int[] bruteReturningAnotherArray(int[] arr) {
-        int[] bruteArr = new int[arr.length];
+        int[] bruteArr = new int[arr.length]; // new array will be filled with { 0, 0, 0s }
         int pointer = 0;
         for(int i = 0; i < arr.length; i++) {
             if(arr[i] != 0) {
