@@ -355,3 +355,174 @@ static int removeDuplicates(int[] arr) {
     return i + 1;
 }
 ```
+
+---
+
+# 8. Linear Search
+
+## Problem Statement
+
+Given an array and a target element, determine whether the target exists. If found, return its index (first occurrence, last occurrence, or all occurrences depending on the requirement).
+
+## Best Approach
+
+### Idea
+
+Scan the array linearly and compare each element with the target. Stop early when the required occurrence is found, or collect every matching index when all occurrences are needed.
+
+### Algorithm
+
+**First occurrence**
+
+1. Traverse the array from index `0` to `n - 1`.
+2. If `arr[i] == target`, return `i`.
+3. If the loop finishes, return `-1`.
+
+**Last occurrence**
+
+1. Traverse the array from index `n - 1` down to `0`.
+2. If `arr[i] == target`, return `i`.
+3. If the loop finishes, return `-1`.
+
+**All occurrences**
+
+1. Create an empty list.
+2. Traverse the array from left to right.
+3. Add index `i` to the list whenever `arr[i] == target`.
+4. Return the list.
+
+### Time Complexity
+
+`O(N)` for first and last occurrence because each element is checked at most once.
+
+`O(N)` for all occurrences because the full array is scanned once.
+
+### Space Complexity
+
+`O(1)` for first and last occurrence because only loop variables are used.
+
+`O(K)` for all occurrences, where `K` is the number of matches, because indexes are stored in a list.
+
+### Key Points
+
+- Works on unsorted arrays; no preprocessing is required.
+- Returning `-1` is the standard way to signal "not found" for index-based search.
+- For last occurrence, reverse traversal avoids a second pass.
+- For all occurrences, an `ArrayList<Integer>` is a simple and readable choice.
+
+### Code
+
+```java
+static int returnTheFirstOccurenceIndex(int[] arr, int target) {
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static int returnTheLastOccurenceIndex(int[] arr, int target) {
+    for (int i = arr.length - 1; i >= 0; i--) {
+        if (arr[i] == target) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+static ArrayList<Integer> returnAllTheOccurenceIndexes(int[] arr, int target) {
+    ArrayList<Integer> indexes = new ArrayList<>();
+    for (int i = 0; i < arr.length; i++) {
+        if (arr[i] == target) {
+            indexes.add(i);
+        }
+    }
+    return indexes;
+}
+```
+
+---
+
+# 9. Second Largest and Second Smallest
+
+## Problem Statement
+
+Find the second distinct largest and second distinct smallest elements in an array.
+
+## Best Approach
+
+### Idea
+
+Track the two smallest and two largest values in separate single-pass traversals. Each update mirrors the logic used for finding the second largest element.
+
+### Algorithm
+
+**Second smallest**
+
+1. Initialize `firstMin = Integer.MAX_VALUE` and `secondMin = Integer.MAX_VALUE`.
+2. Traverse the array.
+3. If the current element is smaller than `firstMin`, shift `firstMin` to `secondMin` and update `firstMin`.
+4. Otherwise, if it is greater than `firstMin` but smaller than `secondMin`, update `secondMin`.
+5. After traversal, return `secondMin`.
+
+**Second largest**
+
+1. Initialize `firstMax = Integer.MIN_VALUE` and `secondMax = Integer.MIN_VALUE`.
+2. Traverse the array.
+3. If the current element is greater than `firstMax`, shift `firstMax` to `secondMax` and update `firstMax`.
+4. Otherwise, if it is smaller than `firstMax` but greater than `secondMax`, update `secondMax`.
+5. After traversal, return `secondMax`.
+
+### Time Complexity
+
+`O(N)` for each function because the array is scanned once per call.
+
+`O(N)` overall if both values are needed, since two linear passes are still linear time.
+
+### Space Complexity
+
+`O(1)` because only a constant number of variables are used.
+
+### Key Points
+
+- "Second smallest" and "second largest" usually mean second distinct values.
+- Arrays with fewer than two distinct elements may not have a valid answer.
+- The second-smallest logic is the mirror of the second-largest logic.
+- Two separate passes are clear and still optimal for interview purposes.
+
+### Code
+
+```java
+static int findSecondSmallest(int[] arr) {
+    int firstMin = Integer.MAX_VALUE;
+    int secondMin = Integer.MAX_VALUE;
+
+    for (int num : arr) {
+        if (num < firstMin) {
+            secondMin = firstMin;
+            firstMin = num;
+        } else if (num > firstMin && num < secondMin) {
+            secondMin = num;
+        }
+    }
+
+    return secondMin;
+}
+
+static int findSecondLargest(int[] arr) {
+    int firstMax = Integer.MIN_VALUE;
+    int secondMax = Integer.MIN_VALUE;
+
+    for (int num : arr) {
+        if (num > firstMax) {
+            secondMax = firstMax;
+            firstMax = num;
+        } else if (num < firstMax && num > secondMax) {
+            secondMax = num;
+        }
+    }
+
+    return secondMax;
+}
+```
