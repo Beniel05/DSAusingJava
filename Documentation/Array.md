@@ -526,3 +526,118 @@ static int findSecondLargest(int[] arr) {
     return secondMax;
 }
 ```
+
+---
+
+# 10. Union of Two Sorted Arrays
+
+## Problem Statement
+
+Given two sorted arrays, return the union containing all distinct elements from both arrays in sorted order.
+
+## Brute Force Approach
+
+### Idea
+
+Build a result list by adding elements from both arrays one by one. Before adding, check whether the element already exists in the list. After both arrays are processed, sort the list and return it.
+
+### Algorithm
+
+1. Create an empty `ArrayList<Integer>`.
+2. Traverse the first array and add each element only if it is not already present in the list.
+3. Traverse the second array and add each element only if it is not already present in the list.
+4. Sort the list.
+5. Return the sorted list as the union.
+
+### Time Complexity
+
+`O((N + M)^2 + U log U)` where `N` and `M` are the sizes of the two arrays and `U` is the number of distinct elements in the union.
+
+The duplicate check scans the list linearly, and sorting adds `O(U log U)`.
+
+### Space Complexity
+
+`O(N + M)` because the result list can store at most all distinct elements from both arrays.
+
+### Key Points
+
+- Easy to understand and implement.
+- Works even if the input arrays are not sorted, though this problem gives sorted arrays.
+- Duplicate checking with a linear scan makes this approach inefficient for large inputs.
+
+### Code
+
+```java
+static ArrayList<Integer> findUnionBRUTE(int[] a1, int[] a2) {
+    ArrayList<Integer> list = new ArrayList<>();
+
+    for (int element : a1) {
+        if (!contains(list, element)) {
+            list.add(element);
+        }
+    }
+
+    for (int element : a2) {
+        if (!contains(list, element)) {
+            list.add(element);
+        }
+    }
+
+    Collections.sort(list);
+    return list;
+}
+
+static boolean contains(ArrayList<Integer> list, int value) {
+    for (int i = 0; i < list.size(); i++) {
+        if (value == list.get(i)) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+## Better Approach
+
+### Idea
+
+Use a `TreeSet` to insert all elements from both arrays. A set removes duplicates automatically, and a tree set keeps elements sorted.
+
+### Algorithm
+
+1. Create an empty `TreeSet<Integer>`.
+2. Insert every element from the first array into the set.
+3. Insert every element from the second array into the set.
+4. Convert the set into an `ArrayList` and return it.
+
+### Time Complexity
+
+`O((N + M) log(N + M))` because each insertion into a tree set takes logarithmic time.
+
+### Space Complexity
+
+`O(N + M)` to store all distinct elements in the set.
+
+### Key Points
+
+- Cleaner than manually checking duplicates and sorting a list.
+- Output is automatically sorted because `TreeSet` maintains order.
+- Still not the most optimal approach when both input arrays are already sorted.
+
+### Code
+
+```java
+static List<Integer> findUnionBETTER(int[] a1, int[] a2) {
+    Set<Integer> st = new TreeSet<>();
+
+    for (int i : a1) {
+        st.add(i);
+    }
+
+    for (int i : a2) {
+        st.add(i);
+    }
+
+    return new ArrayList<>(st);
+}
+```
