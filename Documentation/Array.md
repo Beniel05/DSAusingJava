@@ -641,3 +641,377 @@ static List<Integer> findUnionBETTER(int[] a1, int[] a2) {
     return new ArrayList<>(st);
 }
 ```
+
+---
+
+# 11. Find The Missing Number
+
+## Problem Statement
+
+Given an array containing `N - 1` distinct numbers from `1` to `N`, find the one missing number.
+
+## Brute Force Approach
+
+### Idea
+
+For every number from `1` to `N`, check whether it exists in the array by scanning the array linearly.
+
+### Algorithm
+
+1. Loop `i` from `1` to `N - 1`.
+2. For each `i`, scan the entire array to see if `i` is present.
+3. If `i` is not found, it is the missing number.
+
+### Time Complexity
+
+`O(N^2)` because each value from `1` to `N` may require a full array scan.
+
+### Space Complexity
+
+`O(1)` because only a flag variable is used.
+
+### Key Points
+
+- Simple and works without extra data structures.
+- Inefficient for large values of `N`.
+- Assumes numbers are in the range `1` to `N` with exactly one missing value.
+
+### Code
+
+```java
+static void brute(int[] a, int n) {
+    for (int i = 1; i < n; i++) {
+        int flag = 0;
+        for (int j = 0; j < n - 1; j++) {
+            if (a[j] == i) {
+                flag = 1;
+                break;
+            }
+        }
+        if (flag == 0) {
+            System.out.println("The Missing Number is: " + i);
+        }
+    }
+}
+```
+
+## Better Approach
+
+### Idea
+
+Use a hash array to mark which numbers from `1` to `N` are present, then return the unmarked index.
+
+### Algorithm
+
+1. Create a hash array of size `N + 1`.
+2. Mark `hashArray[a[i]] = 1` for every element in the input array.
+3. Traverse from `1` to `N - 1` and return the first index whose mark is still `0`.
+
+### Time Complexity
+
+`O(N)` because the array is traversed a constant number of times.
+
+### Space Complexity
+
+`O(N)` because a hash array of size `N + 1` is used.
+
+### Key Points
+
+- Much faster than the brute force nested-loop check.
+- Easy to extend if multiple missing numbers need to be tracked.
+- Uses extra space compared with the sum approach.
+
+### Code
+
+```java
+static int better(int[] a, int n) {
+    int[] hashArray = new int[n + 1];
+
+    for (int i = 0; i < n - 1; i++) {
+        hashArray[a[i]] = 1;
+    }
+
+    for (int i = 1; i < n; i++) {
+        if (hashArray[i] == 0) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+```
+
+## Optimized Approach
+
+### Idea
+
+Use the sum formula for the first `N` natural numbers and subtract the sum of the array elements. The difference is the missing number.
+
+### Algorithm
+
+1. Compute `sumOfN = N * (N + 1) / 2`.
+2. Compute the sum of all elements in the array.
+3. Return `sumOfN - sumOfArr`.
+
+### Time Complexity
+
+`O(N)` because the array is summed once.
+
+### Space Complexity
+
+`O(1)` because only a few integer variables are used.
+
+### Key Points
+
+- Optimal space solution for this version of the problem.
+- Works only when numbers are exactly `1` to `N` with one missing value.
+- Be careful with overflow for very large `N` in languages with fixed integer sizes.
+
+### Code
+
+```java
+static void optimizedSum(int[] a, int n) {
+    int sumOfN = n * (n + 1) / 2;
+    int sumOfArr = 0;
+
+    for (int i = 0; i < a.length; i++) {
+        sumOfArr += a[i];
+    }
+
+    System.out.println(sumOfN - sumOfArr);
+}
+```
+
+---
+
+# 12. Max Consecutive Ones
+
+## Problem Statement
+
+Given a binary array containing only `0`s and `1`s, find the maximum number of consecutive `1`s.
+
+## Best Approach
+
+### Idea
+
+Traverse the array once while maintaining a running count of consecutive `1`s. Reset the count when a `0` appears and update the maximum whenever the current streak grows.
+
+### Algorithm
+
+1. Initialize `count = 0` and `maxCount = 0`.
+2. Traverse the array from left to right.
+3. If the current element is `1`, increment `count` and update `maxCount`.
+4. If the current element is `0`, reset `count` to `0`.
+5. Return `maxCount`.
+
+### Time Complexity
+
+`O(N)` because the array is scanned once.
+
+### Space Complexity
+
+`O(1)` because only constant extra variables are used.
+
+### Key Points
+
+- Classic single-pass counting problem.
+- The streak resets immediately after encountering a `0`.
+- Works for empty arrays if handled separately, otherwise `maxCount` stays `0`.
+
+### Code
+
+```java
+static int findMaxConsecutiveOnes(int[] nums) {
+    int maxCount = 0;
+    int count = 0;
+
+    for (int i = 0; i < nums.length; i++) {
+        if (nums[i] == 1) {
+            count++;
+            if (count > maxCount) {
+                maxCount = count;
+            }
+        } else {
+            count = 0;
+        }
+    }
+
+    return maxCount;
+}
+```
+
+---
+
+# 13. Intersection of Two Sorted Arrays
+
+## Problem Statement
+
+Given two sorted arrays, return their intersection. Depending on the requirement, the answer may include duplicates present in both arrays or only the distinct common elements.
+
+## Brute Force Approach
+
+### Idea
+
+For each element in the first array, scan the second array and add the first unmatched equal element. Use a visited array so each element in the second array is used at most once.
+
+### Algorithm
+
+1. Create an empty result list and a `vis` array for the second array.
+2. Traverse the first array element by element.
+3. For each element, scan the second array until a match is found or an element larger than the current value appears.
+4. If a match is found and that second-array index is unused, add it to the result and mark it visited.
+5. Return the result list.
+
+### Time Complexity
+
+`O(N * M)` in the worst case, where `N` and `M` are the sizes of the two arrays.
+
+The sorted order allows early breaking, but nested loops still make this approach slower than two pointers.
+
+### Space Complexity
+
+`O(M)` for the visited array, plus space for the result list.
+
+### Key Points
+
+- Preserves duplicate intersection values when both arrays contain repeated elements.
+- The `vis` array prevents reusing the same element from the second array.
+- Early break on `b[j] > a[i]` uses the sorted property.
+
+### Code
+
+```java
+static ArrayList<Integer> brute(int[] a, int[] b) {
+    ArrayList<Integer> list = new ArrayList<>();
+
+    int n1 = a.length;
+    int n2 = b.length;
+    int[] vis = new int[n2];
+
+    for (int i = 0; i < n1; i++) {
+        for (int j = 0; j < n2; j++) {
+            if (a[i] == b[j] && vis[j] == 0) {
+                list.add(b[j]);
+                vis[j] = 1;
+                break;
+            }
+            if (b[j] > a[i]) {
+                break;
+            }
+        }
+    }
+
+    return list;
+}
+```
+
+## Optimized Two Pointer Approach
+
+### Idea
+
+Use two pointers to traverse both sorted arrays simultaneously. Whenever both pointers refer to equal values, add that value to the result and move both pointers forward.
+
+### Algorithm
+
+1. Initialize `i = 0` and `j = 0`.
+2. While both pointers are in range:
+   - If `a[i] < b[j]`, increment `i`.
+   - If `a[i] == b[j]`, add the value and increment both pointers.
+   - If `a[i] > b[j]`, increment `j`.
+3. Return the result list.
+
+### Time Complexity
+
+`O(N + M)` because each pointer moves only forward.
+
+### Space Complexity
+
+`O(1)` extra space excluding the output list.
+
+### Key Points
+
+- Standard optimal approach for sorted-array intersection.
+- Includes duplicates when both arrays contain the same value multiple times.
+- Much cleaner and faster than nested loops.
+
+### Code
+
+```java
+static ArrayList<Integer> optimizedTwoPointer(int[] a, int[] b) {
+    ArrayList<Integer> list = new ArrayList<>();
+
+    int i = 0, j = 0;
+    int n1 = a.length, n2 = b.length;
+
+    while (i < n1 && j < n2) {
+        if (a[i] < b[j]) {
+            i++;
+        } else if (a[i] == b[j]) {
+            list.add(b[j]);
+            i++;
+            j++;
+        } else {
+            j++;
+        }
+    }
+
+    return list;
+}
+```
+
+## Unique Intersection Approach
+
+### Idea
+
+Use the same two-pointer traversal, but add a common value only once by comparing it with the last element already stored in the result list.
+
+### Algorithm
+
+1. Initialize `i = 0` and `j = 0`.
+2. While both pointers are in range:
+   - If `a[i] < b[j]`, increment `i`.
+   - If `a[i] > b[j]`, increment `j`.
+   - If they are equal, add `a[i]` only when it is not equal to the last result element, then increment both pointers.
+3. Return the result list.
+
+### Time Complexity
+
+`O(N + M)` because both arrays are scanned once with two pointers.
+
+### Space Complexity
+
+`O(1)` extra space excluding the output list.
+
+### Key Points
+
+- Useful when the answer must contain distinct common elements only.
+- The last-element check avoids duplicate entries in the result.
+- Same traversal pattern as union/intersection two-pointer problems.
+
+### Code
+
+```java
+static ArrayList<Integer> uniqueIntersection(int[] a, int[] b) {
+    ArrayList<Integer> list = new ArrayList<>();
+
+    int i = 0, j = 0;
+    int n1 = a.length;
+    int n2 = b.length;
+
+    while (i < n1 && j < n2) {
+        if (a[i] < b[j]) {
+            i++;
+        } else if (a[i] > b[j]) {
+            j++;
+        } else {
+            if (list.size() == 0 || list.get(list.size() - 1) != a[i]) {
+                list.add(a[i]);
+            }
+            i++;
+            j++;
+        }
+    }
+
+    return list;
+}
+```
