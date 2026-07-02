@@ -1,6 +1,8 @@
 ## Navigation
 
-- [Section 1 — Array Problems](./Array_Section_1.md)
+- [Array Documentation](./Array.md)
+
+# Section 1 — Array Problems
 
 ---
 
