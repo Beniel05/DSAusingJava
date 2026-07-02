@@ -1,3 +1,4 @@
+package Section_1;
 public class MaxConsecutiveOnes {
 
     public static void main(String[] args) {
