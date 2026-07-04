@@ -1,4 +1,3 @@
-package Section_1;
 public class FindTheMissingNumber {
     public static void main(String[] args) {
         int[] array = { 1, 2, 4, 5 }; // array will contain n - 1 elements.

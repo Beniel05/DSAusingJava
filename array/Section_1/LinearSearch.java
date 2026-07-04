@@ -1,4 +1,3 @@
-package Section_1;
 import java.util.ArrayList;
 
 public class LinearSearch {
