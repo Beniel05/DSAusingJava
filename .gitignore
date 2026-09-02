@@ -6,3 +6,11 @@ HashMapCollection.java
 
 Documentation/command.txt
 PlusOne_Leetcode.java
+LongestSubArrayWithSum_K_Positives.java
+
+
+array/section_2/BestTimeToBuyAndSellStock.java
+array/section_2/MaximumSubArraySum.java
+array/section_2/NextPermutation.java
+array/section_2/RearrangeElementsBySign.java
+sorting/CyclicSort.java

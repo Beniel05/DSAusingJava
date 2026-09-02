@@ -2,6 +2,15 @@ import java.util.Arrays;
 
 public class CopyAnArray {
     public static void main(String[] args) {
+
+        // Just copy - no extra size.
+
+        String[] arr1 = {"One", "two", "Three"};
+        String[] arr2 = arr1;
+        System.out.println(Arrays.toString(arr2));
+
+
+        // Copy with NEW extra length;
         
         int[] a = new int[3]; // 0, 1, 2 <=> 3
         a[0] = 1;
